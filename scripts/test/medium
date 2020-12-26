@@ -2,4 +2,4 @@
 
 echo $@
 
-jest --config=test/jest.medium.config.ts $@
+jest --config=test/jest.medium.config.ts --passWithNoTests $@
