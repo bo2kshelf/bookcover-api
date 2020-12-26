@@ -4,5 +4,3 @@ junit/
 
 # output
 dist/
-
-schema.graphqls
