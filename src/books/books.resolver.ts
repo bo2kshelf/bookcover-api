@@ -6,7 +6,7 @@ export class BooksResolver {
   constructor(private bookService: BooksService) {}
 
   @ResolveField()
-  async cover(@Parent() book: {isbn?: string}) {
+  async cover(@Parent() book: {title: string; isbn?: string}) {
     return this.bookService.getCover(book);
   }
 }
