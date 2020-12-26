@@ -1,0 +1,5 @@
+extend type Book @key(fields: "id") {
+  id: ID! @external
+  isbn: String @external
+  cover: String @requires(fields: "isbn")
+}
