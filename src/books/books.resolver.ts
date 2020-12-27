@@ -6,7 +6,7 @@ import {Book} from './entity/book.entity';
 export class BooksResolver {
   constructor(private bookService: BooksService) {}
 
-  @ResolveField(() => String)
+  @ResolveField(() => String, {nullable: true})
   @Directive(`@requires(fields: "isbn title")`)
   async cover(@Parent() book: {title: string; isbn?: string}) {
     return this.bookService.getCover(book);
