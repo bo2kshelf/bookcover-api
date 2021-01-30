@@ -1,6 +1,5 @@
 import {HttpService, Inject, Injectable} from '@nestjs/common';
 import {ConfigType} from '@nestjs/config';
-import {stringify} from 'querystringify';
 import {RakutenConfig} from './rakuten.config';
 
 @Injectable()
@@ -12,19 +11,15 @@ export class RakutenService {
   ) {}
 
   async getBookCover(isbn: string): Promise<string | null> {
-    const query = stringify(
-      {
-        format: 'json',
-        isbn,
-        booksGenreId: '001',
-        applicationId: this.configService.applicationId,
-      },
-      true,
-    );
     return this.httpService
-      .get(
-        `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404${query}`,
-      )
+      .get(this.configService.endpoint, {
+        params: {
+          format: 'json',
+          applicationId: this.configService.applicationId,
+          isbn,
+          booksGenreId: '001',
+        },
+      })
       .toPromise()
       .then(({data}) => {
         return (
