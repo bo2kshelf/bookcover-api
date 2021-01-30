@@ -16,7 +16,10 @@ describe(RakutenService.name, () => {
         RakutenService,
         {
           provide: RakutenConfig.KEY,
-          useValue: {applicationId: 'example'},
+          useValue: {
+            endpoint: `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404`,
+            applicationId: 'example',
+          },
         },
         {
           provide: HttpService,
