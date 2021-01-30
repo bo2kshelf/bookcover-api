@@ -16,7 +16,7 @@ export class RakutenService {
         params: {
           format: 'json',
           applicationId: this.configService.applicationId,
-          isbn,
+          isbn: isbn.replace(/-/g, ''),
           booksGenreId: '001',
         },
       })
