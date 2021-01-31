@@ -1,25 +1,36 @@
+import {CACHE_MANAGER} from '@nestjs/common';
 import {Test, TestingModule} from '@nestjs/testing';
+import {Cache} from 'cache-manager';
 import {OpenBDService} from '../../../openbd/openbd.service';
 import {RakutenService} from '../../../rakuten/rakuten.service';
 import {BooksService} from '../../books.service';
 
 jest.mock('../../../openbd/openbd.service');
 jest.mock('../../../rakuten/rakuten.service');
+jest.mock('cache-manager');
 
 describe(BooksService.name, () => {
   let module: TestingModule;
 
   let booksService: BooksService;
 
+  let cacheManager: Cache;
   let openbdService: OpenBDService;
   let rakutenService: RakutenService;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [BooksService, OpenBDService, RakutenService],
+      providers: [
+        {provide: CACHE_MANAGER, useValue: {get() {}, set() {}}},
+        BooksService,
+        OpenBDService,
+        RakutenService,
+      ],
     }).compile();
 
     booksService = module.get<BooksService>(BooksService);
+
+    cacheManager = module.get<Cache>(CACHE_MANAGER);
     openbdService = module.get<OpenBDService>(OpenBDService);
     rakutenService = module.get<RakutenService>(RakutenService);
   });
@@ -55,12 +66,35 @@ describe(BooksService.name, () => {
         'https://cover.openbd.jp/9784781618968.jpg',
       ],
       [null, null, null],
-    ])('%#', async (openBD, rakuten, expected) => {
+    ])('未キャッシュ(%#)', async (openBD, rakuten, expected) => {
+      jest.spyOn(booksService, 'getCachedByISBN').mockResolvedValueOnce(null);
+
+      const set = jest.fn((isbn, result) => result);
+      jest.spyOn(cacheManager, 'set').mockImplementationOnce(set);
+
       jest.spyOn(openbdService, 'getBookCover').mockResolvedValueOnce(openBD);
       jest.spyOn(rakutenService, 'getBookCover').mockResolvedValueOnce(rakuten);
 
       const actual = await booksService.getCover({isbn: '9784781618968'});
+
       expect(actual).toBe(expected);
+      if (expected) expect(set).toHaveBeenCalled();
+    });
+
+    it('キャッシュ済み', async () => {
+      const expected = 'https://cover.openbd.jp/9784781618968.jpg';
+
+      jest
+        .spyOn(booksService, 'getCachedByISBN')
+        .mockResolvedValueOnce(expected);
+
+      const set = jest.fn();
+      jest.spyOn(cacheManager, 'set').mockImplementationOnce(set);
+
+      const actual = await booksService.getCover({isbn: '9784781618968'});
+
+      expect(actual).toBe(expected);
+      expect(set).not.toHaveBeenCalled();
     });
   });
 });

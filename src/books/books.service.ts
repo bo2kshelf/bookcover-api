@@ -14,14 +14,15 @@ export class BooksService {
     private readonly rakutenService: RakutenService,
   ) {}
 
+  async getCachedByISBN(isbn: string): Promise<string | null> {
+    return promisify<string, string | undefined>(this.cacheManager.get)(isbn)
+      .then((value) => value || null)
+      .catch(() => null);
+  }
+
   async getCover({isbn}: {isbn?: string}): Promise<string | null> {
     if (isbn) {
-      const cached = await promisify<string, string>(this.cacheManager.get)(
-        isbn,
-      )
-        .then((value) => value)
-        .catch(() => null);
-
+      const cached = await this.getCachedByISBN(isbn);
       if (cached) return cached;
 
       const fetched =
