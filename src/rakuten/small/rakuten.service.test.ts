@@ -73,7 +73,7 @@ describe(RakutenService.name, () => {
 
       const actual = await rakutenService.getBookCover('9784832272460');
       expect(actual).toBe(
-        'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg?_ex=200x200',
+        'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg',
       );
     });
 

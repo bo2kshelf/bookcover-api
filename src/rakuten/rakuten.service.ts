@@ -22,12 +22,16 @@ export class RakutenService {
       })
       .toPromise()
       .then(({data}) => {
-        return (
+        const url: string | null =
           data?.Items?.[0]?.Item?.largeImageUrl ||
           data?.Items?.[0]?.Item?.mediumImageUrl ||
           data?.Items?.[0]?.Item?.smallImageUrl ||
-          null
-        );
+          null;
+        if (!url) return null;
+
+        const parsedURL = new URL(url);
+        parsedURL.search = '';
+        return parsedURL.toString();
       })
       .catch(() => null);
   }
