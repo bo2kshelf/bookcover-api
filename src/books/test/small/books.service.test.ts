@@ -1,4 +1,5 @@
 import {Test, TestingModule} from '@nestjs/testing';
+import {ExcludeService} from '../../../exclude/exclude.service';
 import {OpenBDService} from '../../../openbd/openbd.service';
 import {RakutenService} from '../../../rakuten/rakuten.service';
 import {RedisCacheService} from '../../../redis-cache/redis-cache.service';
@@ -6,6 +7,7 @@ import {BooksService} from '../../books.service';
 
 jest.mock('../../../openbd/openbd.service');
 jest.mock('../../../rakuten/rakuten.service');
+jest.mock('../../../exclude/exclude.service');
 jest.mock('../../../redis-cache/redis-cache.service');
 
 describe(BooksService.name, () => {
@@ -14,6 +16,7 @@ describe(BooksService.name, () => {
   let booksService: BooksService;
 
   let cacheManager: RedisCacheService;
+  let excludeService: ExcludeService;
   let openbdService: OpenBDService;
   let rakutenService: RakutenService;
 
@@ -21,6 +24,7 @@ describe(BooksService.name, () => {
     module = await Test.createTestingModule({
       providers: [
         RedisCacheService,
+        ExcludeService,
         BooksService,
         OpenBDService,
         RakutenService,
@@ -30,6 +34,7 @@ describe(BooksService.name, () => {
     booksService = module.get<BooksService>(BooksService);
 
     cacheManager = module.get<RedisCacheService>(RedisCacheService);
+    excludeService = module.get<ExcludeService>(ExcludeService);
     openbdService = module.get<OpenBDService>(OpenBDService);
     rakutenService = module.get<RakutenService>(RakutenService);
   });
@@ -67,6 +72,7 @@ describe(BooksService.name, () => {
       [null, null, null],
     ])('未キャッシュ(%#)', async (openBD, rakuten, expected) => {
       jest.spyOn(cacheManager, 'get').mockResolvedValueOnce(undefined);
+      jest.spyOn(excludeService, 'canExcludeFromUrl').mockResolvedValue(false);
 
       const set = jest.fn((isbn, result) => result);
       jest.spyOn(cacheManager, 'set').mockImplementationOnce(set);
