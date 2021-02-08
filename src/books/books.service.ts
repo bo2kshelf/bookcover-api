@@ -1,4 +1,5 @@
 import {Injectable} from '@nestjs/common';
+import {ExcludeService} from '../exclude/exclude.service';
 import {OpenBDService} from '../openbd/openbd.service';
 import {RakutenService} from '../rakuten/rakuten.service';
 import {RedisCacheService} from '../redis-cache/redis-cache.service';
@@ -7,6 +8,8 @@ import {RedisCacheService} from '../redis-cache/redis-cache.service';
 export class BooksService {
   constructor(
     private cache: RedisCacheService,
+
+    private readonly excludeService: ExcludeService,
 
     private readonly oepnBDService: OpenBDService,
     private readonly rakutenService: RakutenService,
@@ -22,13 +25,13 @@ export class BooksService {
     }
 
     const openBD = await this.oepnBDService.getBookCover(key);
-    if (openBD) {
+    if (openBD && !(await this.excludeService.canExcludeFromUrl(openBD))) {
       await this.cache.set(key, openBD);
       return openBD;
     }
 
     const rakuten = await this.rakutenService.getBookCover(key);
-    if (rakuten) {
+    if (rakuten && !(await this.excludeService.canExcludeFromUrl(rakuten))) {
       await this.cache.set(key, rakuten);
       return rakuten;
     }

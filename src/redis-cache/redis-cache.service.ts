@@ -1,5 +1,5 @@
 import {CACHE_MANAGER, Inject, Injectable} from '@nestjs/common';
-import {Cache} from 'cache-manager';
+import {Cache, CachingConfig} from 'cache-manager';
 
 @Injectable()
 export class RedisCacheService {
@@ -12,7 +12,7 @@ export class RedisCacheService {
     return this.cacheManager.get<T>(key);
   }
 
-  async set(key: string, value: string) {
-    return this.cacheManager.set(key, value);
+  async set(key: string, value: string, options?: CachingConfig) {
+    return this.cacheManager.set(key, value, options);
   }
 }
