@@ -1,38 +1,42 @@
-import {CACHE_MANAGER, Inject, Injectable} from '@nestjs/common';
-import {Cache} from 'cache-manager';
-import {promisify} from 'util';
+import {Injectable} from '@nestjs/common';
 import {OpenBDService} from '../openbd/openbd.service';
 import {RakutenService} from '../rakuten/rakuten.service';
+import {RedisCacheService} from '../redis-cache/redis-cache.service';
 
 @Injectable()
 export class BooksService {
   constructor(
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
+    private cache: RedisCacheService,
 
     private readonly oepnBDService: OpenBDService,
     private readonly rakutenService: RakutenService,
   ) {}
 
-  async getCachedByISBN(isbn: string): Promise<string | null> {
-    return promisify<string, string | undefined>(this.cacheManager.get)(isbn)
-      .then((value) => value || null)
-      .catch(() => null);
+  async getFromISBN(isbn: string): Promise<string | null> {
+    const key = isbn.replace(/-/g, '');
+
+    const cached = await this.cache.get<string>(key);
+    if (cached) {
+      await this.cache.set(key, cached);
+      return cached;
+    }
+
+    const openBD = await this.oepnBDService.getBookCover(key);
+    if (openBD) {
+      await this.cache.set(key, openBD);
+      return openBD;
+    }
+
+    const rakuten = await this.rakutenService.getBookCover(key);
+    if (rakuten) {
+      await this.cache.set(key, rakuten);
+      return rakuten;
+    }
+
+    return null;
   }
 
   async getCover({isbn}: {isbn?: string}): Promise<string | null> {
-    if (isbn) {
-      const cached = await this.getCachedByISBN(isbn);
-      if (cached) return cached;
-
-      const fetched =
-        (await this.oepnBDService.getBookCover(isbn)) ||
-        (await this.rakutenService.getBookCover(isbn)) ||
-        null;
-
-      if (fetched)
-        return this.cacheManager.set(isbn, fetched, {ttl: 60 * 60 * 24 * 7});
-    }
-    return null;
+    return (isbn && (await this.getFromISBN(isbn))) || null;
   }
 }
