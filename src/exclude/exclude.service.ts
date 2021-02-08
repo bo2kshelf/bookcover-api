@@ -19,10 +19,10 @@ export class ExcludeService {
   }
 
   async checkFromCache(key: string): Promise<boolean> {
-    return (
-      (await this.cache.get<string>(this.createRedisKey(key))) === 'true' ||
-      false
-    );
+    return this.cache
+      .get<string>(this.createRedisKey(key))
+      .then((value) => Boolean(value && value === 'true'))
+      .catch(() => false);
   }
 
   checkSizePerDataSize(width: number, height: number, length: number): boolean {
@@ -30,19 +30,19 @@ export class ExcludeService {
   }
 
   async canExcludeFromUrl(url: string): Promise<boolean> {
-    if (this.checkFromCache(url)) return true;
+    if (await this.checkFromCache(url)) return true;
 
-    const canExclude = this.httpService
+    const canExclude = await this.httpService
       .get(url, {responseType: 'arraybuffer'})
       .toPromise()
       .then(({data}) => {
         const {width, height} = imageSize(data);
         const byteLength = data.byteLength;
-        return (
+        return Boolean(
           width &&
-          height &&
-          byteLength &&
-          this.checkSizePerDataSize(width, height, length)
+            height &&
+            byteLength &&
+            this.checkSizePerDataSize(width, height, byteLength),
         );
       });
 
