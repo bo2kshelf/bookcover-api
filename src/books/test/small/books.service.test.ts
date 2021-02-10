@@ -3,6 +3,7 @@ import {ExcludeService} from '../../../exclude/exclude.service';
 import {OpenBDService} from '../../../openbd/openbd.service';
 import {RakutenService} from '../../../rakuten/rakuten.service';
 import {RedisCacheService} from '../../../redis-cache/redis-cache.service';
+import {BooksConfig} from '../../books.config';
 import {BooksService} from '../../books.service';
 
 jest.mock('../../../openbd/openbd.service');
@@ -23,6 +24,10 @@ describe(BooksService.name, () => {
   beforeEach(async () => {
     module = await Test.createTestingModule({
       providers: [
+        {
+          provide: BooksConfig.KEY,
+          useValue: {imageproxyBaseUrl: `http://localhost:8080`},
+        },
         RedisCacheService,
         ExcludeService,
         BooksService,
