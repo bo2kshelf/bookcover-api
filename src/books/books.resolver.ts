@@ -9,6 +9,8 @@ export class BooksResolver {
   @ResolveField(() => String, {nullable: true})
   @Directive(`@requires(fields: "isbn title")`)
   async cover(@Parent() book: {title: string; isbn?: string}) {
-    return this.bookService.getCover(book);
+    return this.bookService
+      .getCover(book)
+      .then((url) => (url && this.bookService.urlProxy(url)) || null);
   }
 }

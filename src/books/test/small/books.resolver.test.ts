@@ -2,6 +2,8 @@ import {Test, TestingModule} from '@nestjs/testing';
 import {BooksResolver} from '../../books.resolver';
 import {BooksService} from '../../books.service';
 
+jest.mock('../../books.service');
+
 describe(BooksResolver.name, () => {
   let module: TestingModule;
 
@@ -11,15 +13,7 @@ describe(BooksResolver.name, () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [
-        BooksResolver,
-        {
-          provide: BooksService,
-          useValue: {
-            getCover() {},
-          },
-        },
-      ],
+      providers: [BooksResolver, BooksService],
     }).compile();
 
     booksResolver = module.get<BooksResolver>(BooksResolver);
@@ -40,6 +34,12 @@ describe(BooksResolver.name, () => {
   });
 
   describe('cover()', () => {
+    let urlProxyMockFn: jest.Mock;
+    beforeEach(() => {
+      urlProxyMockFn = jest.fn((url: string): string => url);
+      jest.spyOn(booksService, 'urlProxy').mockImplementation(urlProxyMockFn);
+    });
+
     it('BooksServiceが正常な値を返却した場合それを返す', async () => {
       jest
         .spyOn(booksService, 'getCover')
@@ -50,6 +50,7 @@ describe(BooksResolver.name, () => {
         isbn: '9784781618968',
       });
       expect(actual).toBe('https://cover.openbd.jp/9784781618968.jpg');
+      expect(urlProxyMockFn).toHaveBeenCalled();
     });
 
     it('BooksServiceがnullを返却した場合nullを返す', async () => {
@@ -60,6 +61,7 @@ describe(BooksResolver.name, () => {
         isbn: '9784781618968',
       });
       expect(actual).toBeNull();
+      expect(urlProxyMockFn).not.toHaveBeenCalled();
     });
   });
 });
