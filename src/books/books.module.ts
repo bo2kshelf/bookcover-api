@@ -1,6 +1,7 @@
 import {Module} from '@nestjs/common';
 import {ConfigModule} from '@nestjs/config';
 import {ExcludeModule} from '../exclude/exclude.module';
+import {GoogleAPIsModule} from '../googleapis/googleapis.module';
 import {OpenBDModule} from '../openbd/openbd.module';
 import {RakutenModule} from '../rakuten/rakuten.module';
 import {RedisCacheModule} from '../redis-cache/redis-cache.module';
@@ -15,6 +16,7 @@ import {BooksService} from './books.service';
     ExcludeModule,
     OpenBDModule,
     RakutenModule,
+    GoogleAPIsModule,
   ],
   providers: [BooksService, BooksResolver],
   exports: [BooksService],
