@@ -31,11 +31,11 @@
     "@nestjs/platform-express": "7.6.11",
     "apollo-server-express": "2.19.2",
     "cache-manager": "3.4.0",
-    "cache-manager-redis-store": "^2.0.0",
+    "cache-manager-redis-store": "2.0.0",
     "class-transformer": "0.3.2",
     "class-validator": "0.12.2",
     "graphql": "15.4.0",
-    "image-size": "^0.9.3",
+    "image-size": "0.9.3",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.3"
   },
