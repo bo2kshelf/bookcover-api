@@ -1,0 +1,69 @@
+stages:
+  - lint
+  - build
+  - test
+  - deploy
+
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+build:
+  stage: build
+  image: node:14
+  script:
+    - &npm-install yarn install --frozen-lockfile
+    - yarn run build
+  artifacts:
+    paths:
+      - ./dist
+
+eslint:
+  stage: lint
+  image: node:14
+  script:
+    - *npm-install
+    - yarn run lint:eslint
+
+prettier:
+  stage: lint
+  image: node:14
+  script:
+    - *npm-install
+    - yarn run lint:prettier
+
+hadolint:
+  stage: lint
+  image: hadolint/hadolint:latest
+  script:
+    - hadolint Dockerfile
+
+ts-check:
+  stage: lint
+  image: node:14
+  script:
+    - *npm-install
+    - yarn run ts-check
+
+test-small:
+  stage: test
+  image: node:14
+  script:
+    - *npm-install
+    - yarn run test:small --ci
+  artifacts:
+    paths:
+      - coverage/small
+    reports:
+      junit: coverage/small/junit.xml
+
+test-medium:
+  stage: test
+  image: node:14
+  script:
+    - *npm-install
+    - yarn run test:medium --ci
+  artifacts:
+    paths:
+      - coverage/medium
+    reports:
+      junit: coverage/medium/junit.xml

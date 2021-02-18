@@ -1,8 +1,8 @@
 import {HttpService} from '@nestjs/common';
 import {Test, TestingModule} from '@nestjs/testing';
 import {of} from 'rxjs';
-import {RakutenConfig} from '../rakuten.config';
-import {RakutenService} from '../rakuten.service';
+import {RakutenConfig} from '../../rakuten.config';
+import {RakutenService} from '../../rakuten.service';
 
 describe(RakutenService.name, () => {
   let module: TestingModule;
@@ -52,22 +52,20 @@ describe(RakutenService.name, () => {
           config: {},
           status: 200,
           statusText: 'OK',
-          data: [
-            {
-              Items: [
-                {
-                  Item: {
-                    largeImageUrl:
-                      'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg?_ex=200x200',
-                    mediumImageUrl:
-                      'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg?_ex=120x120',
-                    smallImageUrl:
-                      'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg?_ex=64x64',
-                  },
+          data: {
+            Items: [
+              {
+                Item: {
+                  largeImageUrl:
+                    'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg?_ex=200x200',
+                  mediumImageUrl:
+                    'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg?_ex=120x120',
+                  smallImageUrl:
+                    'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/2460/9784832272460.jpg?_ex=64x64',
                 },
-              ],
-            },
-          ],
+              },
+            ],
+          },
         }),
       );
 
