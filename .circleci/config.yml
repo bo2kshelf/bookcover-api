@@ -123,6 +123,7 @@ workflows:
             - test-small
             - test-medium
       - docker/publish:
+          name: docker-publish-develop
           requires:
             - docker/hadolint
             - build
@@ -133,6 +134,7 @@ workflows:
           registry: ghcr.io
           tag: develop
       - docker/publish:
+          name: docker-publish-default
           requires:
             - docker/hadolint
             - build
