@@ -124,6 +124,8 @@ workflows:
             - test-medium
       - docker/publish:
           name: docker-publish-develop
+          context:
+            - ghcr
           requires:
             - docker/hadolint
             - build
@@ -135,6 +137,8 @@ workflows:
           tag: develop
       - docker/publish:
           name: docker-publish-default
+          context:
+            - ghcr
           requires:
             - docker/hadolint
             - build
