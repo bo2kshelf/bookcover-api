@@ -122,3 +122,21 @@ workflows:
             - ts-check
             - test-small
             - test-medium
+      - docker/publish:
+          name: docker-publish-develop
+          requires:
+            - docker/hadolint
+            - build
+          filters:
+            branches:
+              only: develop
+          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          registry: ghcr.io
+          tag: develop
+      - docker/publish:
+          name: docker-publish-default
+          requires:
+            - docker/hadolint
+            - build
+          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          registry: ghcr.io
