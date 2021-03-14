@@ -9,7 +9,7 @@ include:
 
 build:
   stage: build
-  image: node:14
+  image: node:14@sha256:fe842f5b828c121514d62cbe0ace0927aec4f3130297180c3343e54e7ae97362
   script:
     - &npm-install yarn install --frozen-lockfile
     - yarn run build
@@ -19,14 +19,14 @@ build:
 
 eslint:
   stage: lint
-  image: node:14
+  image: node:14@sha256:fe842f5b828c121514d62cbe0ace0927aec4f3130297180c3343e54e7ae97362
   script:
     - *npm-install
     - yarn run lint:eslint
 
 prettier:
   stage: lint
-  image: node:14
+  image: node:14@sha256:fe842f5b828c121514d62cbe0ace0927aec4f3130297180c3343e54e7ae97362
   script:
     - *npm-install
     - yarn run lint:prettier
@@ -39,14 +39,14 @@ hadolint:
 
 ts-check:
   stage: lint
-  image: node:14
+  image: node:14@sha256:fe842f5b828c121514d62cbe0ace0927aec4f3130297180c3343e54e7ae97362
   script:
     - *npm-install
     - yarn run ts-check
 
 test-small:
   stage: test
-  image: node:14
+  image: node:14@sha256:fe842f5b828c121514d62cbe0ace0927aec4f3130297180c3343e54e7ae97362
   script:
     - *npm-install
     - yarn run test:small --ci
@@ -58,7 +58,7 @@ test-small:
 
 test-medium:
   stage: test
-  image: node:14
+  image: node:14@sha256:fe842f5b828c121514d62cbe0ace0927aec4f3130297180c3343e54e7ae97362
   script:
     - *npm-install
     - yarn run test:medium --ci
