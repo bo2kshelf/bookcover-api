@@ -33,7 +33,7 @@ prettier:
 
 hadolint:
   stage: lint
-  image: hadolint/hadolint:latest
+  image: hadolint/hadolint:latest@sha256:05f32173fdc8512b8a8308cb141da79d567bac94b23bf0fcdfa854b686ea60df
   script:
     - hadolint Dockerfile
 
