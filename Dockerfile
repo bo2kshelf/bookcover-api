@@ -1,4 +1,4 @@
-FROM node:14.15.3@sha256:75e1dc0763f97d0907b81e378d0242ab9034fb54544430898b99a3ac71fa0928 AS build
+FROM node:14.16.0@sha256:fe842f5b828c121514d62cbe0ace0927aec4f3130297180c3343e54e7ae97362 AS build
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY src ./src
 RUN yarn install --frozen-lockfile
 RUN yarn build
 
-FROM node:14.15.3-slim@sha256:ddc3c66e079c9725b54cea772b568b461fcfe58db0429f9d90e2b23d4006f3ef
+FROM node:14.16.0-slim@sha256:e8a3dbe7f6d334acfe0365260626d3953073334de4c0fde00f93e8e9e19ed5d5
 
 ENV PORT 4000
 
