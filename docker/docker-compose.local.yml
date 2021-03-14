@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   imageproxy:
-    image: willnorris/imageproxy@sha256:5198f8c2fda421758d730bd5305f581ae5ed9bb72cc513061c1f74f5f50e6226
+    image: willnorris/imageproxy@sha256:7e4c77d1b64db9152591dbfd8565d5d377eb8a243040efa4e241b97ba94feb1d
     ports:
       - 8080:8080
     networks:
