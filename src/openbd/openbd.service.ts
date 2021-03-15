@@ -2,12 +2,12 @@ import {HttpService, Inject, Injectable} from '@nestjs/common';
 import {ConfigType} from '@nestjs/config';
 import openbdConfig from './openbd.config';
 
-export interface APIPayload {
+export type APIPayload = {
   summary: {
     isbn: string;
     cover?: string;
   };
-}
+};
 
 @Injectable()
 export class OpenBDService {

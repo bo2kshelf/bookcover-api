@@ -2,7 +2,7 @@ import {HttpService, Inject, Injectable} from '@nestjs/common';
 import {ConfigType} from '@nestjs/config';
 import {GoogleAPIsConfig} from './googleapis.config';
 
-export interface APIPayload {
+export type APIPayload = {
   items?: {
     volumeInfo?: {
       imageLinks?: {
@@ -11,7 +11,7 @@ export interface APIPayload {
       };
     };
   }[];
-}
+};
 
 @Injectable()
 export class GoogleAPIsService {
