@@ -81,6 +81,7 @@ describe(BooksService.name, () => {
         mock: {openBD?: string; rakuten?: string; googleAPIs?: string},
         expected,
       ) => {
+        // eslint-disable-next-line unicorn/no-useless-undefined
         jest.spyOn(cacheManager, 'get').mockResolvedValueOnce(undefined);
         jest
           .spyOn(excludeService, 'canExcludeFromUrl')
