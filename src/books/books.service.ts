@@ -57,6 +57,6 @@ export class BooksService {
   }
 
   urlProxy(url: string): string {
-    return new URL(`/${url}`, this.config.imageproxyBaseUrl).toString();
+    return new URL(`/${url}`, this.config.imageproxy.url).toString();
   }
 }
