@@ -2,24 +2,26 @@ version: '3.8'
 
 services:
   imageproxy:
-    image: willnorris/imageproxy@sha256:5198f8c2fda421758d730bd5305f581ae5ed9bb72cc513061c1f74f5f50e6226
+    image: willnorris/imageproxy:latest
     ports:
-      - 8080:8080
-    networks:
-      - imageproxy
+      - published: ${IMAGEPROXY_PORT}
+        target: 8080
     environment:
       IMAGEPROXY_CACHE: redis://imageproxy-redis:6379
 
   imageproxy-redis:
     image: redis:6@sha256:f29bcfb891678a0c6a0fc5da0b32ce1ac685af87c0f3aa9327e562da8d3f3b88
-    networks:
-      - imageproxy
+    volumes:
+      - imageproxy-redis-data:/data
 
   redis:
     image: redis:6@sha256:f29bcfb891678a0c6a0fc5da0b32ce1ac685af87c0f3aa9327e562da8d3f3b88
     ports:
-      - 6379:6379
+      - published: ${REDIS_PORT}
+        target: 6379
+    volumes:
+      - redis-data:/data
 
-networks:
-  imageproxy:
-    driver: bridge
+volumes:
+  imageproxy-redis-data:
+  redis-data:
