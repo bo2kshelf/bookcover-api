@@ -1,5 +1,5 @@
 import {registerAs} from '@nestjs/config';
 
 export const BooksConfig = registerAs('books', () => ({
-  imageproxy: {url: process.env.IMAGEPROXY_URL!},
+  imageproxy: {url: process.env.IMAGEPROXY_BASE_URL!},
 }));
