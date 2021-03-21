@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   imageproxy:
-    image: willnorris/imageproxy:latest
+    image: willnorris/imageproxy:latest@sha256:7e4c77d1b64db9152591dbfd8565d5d377eb8a243040efa4e241b97ba94feb1d
     ports:
       - published: ${IMAGEPROXY_PORT}
         target: 8080
