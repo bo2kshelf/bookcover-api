@@ -9,7 +9,7 @@ COPY src ./src
 COPY tsconfig.json tsconfig.build.json ./
 RUN yarn build
 
-FROM node:14.16.0-slim@sha256:e8a3dbe7f6d334acfe0365260626d3953073334de4c0fde00f93e8e9e19ed5d5
+FROM node:14.16.0-slim@sha256:7ff9cf5e411481ee734479637265f063c5f356f496d0f9c47112312cb7b46d42
 
 ENV PORT 4000
 
