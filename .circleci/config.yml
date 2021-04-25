@@ -3,12 +3,12 @@ version: 2.1
 orbs:
   node: circleci/node@4.2.1
   docker: circleci/docker@1.5.0
-  codecov: codecov/codecov@1.1.5
+  codecov: codecov/codecov@1.1.4
 
 jobs:
   build:
     docker:
-      - image: circleci/node:14.16.1
+      - image: cimg/node:14.16.1
     steps:
       - checkout
       - node/install-packages:
@@ -19,7 +19,7 @@ jobs:
 
   lint-prettier:
     docker:
-      - image: circleci/node:14.16.1
+      - image: cimg/node:14.16.1
     steps:
       - checkout
       - node/install-packages:
@@ -28,7 +28,7 @@ jobs:
 
   lint-eslint:
     docker:
-      - image: circleci/node:14.16.1
+      - image: cimg/node:14.16.1
     steps:
       - checkout
       - node/install-packages:
@@ -45,7 +45,7 @@ jobs:
 
   ts-check:
     docker:
-      - image: circleci/node:14.16.1
+      - image: cimg/node:14.16.1
     steps:
       - checkout
       - node/install-packages:
@@ -54,7 +54,7 @@ jobs:
 
   test-small:
     docker:
-      - image: circleci/node:14.16.1
+      - image: cimg/node:14.16.1
     steps:
       - checkout
       - node/install-packages:
@@ -78,7 +78,7 @@ jobs:
 
   test-medium:
     docker:
-      - image: circleci/node:14.16.1
+      - image: cimg/node:14.16.1
     steps:
       - checkout
       - node/install-packages:
