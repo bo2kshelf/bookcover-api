@@ -33,7 +33,7 @@
     "cache-manager": "3.4.3",
     "cache-manager-redis-store": "2.0.0",
     "class-transformer": "0.3.2",
-    "class-validator": "0.12.2",
+    "class-validator": "0.13.1",
     "graphql": "15.4.0",
     "image-size": "0.9.7",
     "reflect-metadata": "0.1.13",
