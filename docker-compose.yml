@@ -10,12 +10,12 @@ services:
       IMAGEPROXY_CACHE: redis://imageproxy-redis:6379
 
   imageproxy-redis:
-    image: redis:6@sha256:f29bcfb891678a0c6a0fc5da0b32ce1ac685af87c0f3aa9327e562da8d3f3b88
+    image: redis:6@sha256:7c540ceff53f0522f6b1c264d8142df08316173d103586ddf51ed91ca49deec8
     volumes:
       - imageproxy-redis-data:/data
 
   redis:
-    image: redis:6@sha256:f29bcfb891678a0c6a0fc5da0b32ce1ac685af87c0f3aa9327e562da8d3f3b88
+    image: redis:6@sha256:7c540ceff53f0522f6b1c264d8142df08316173d103586ddf51ed91ca49deec8
     ports:
       - published: ${REDIS_PORT}
         target: 6379
